@@ -1176,22 +1176,48 @@ function showMessage(text) {
     }, 2500);
 }
 
-// Start game when page loads
-window.onload = function() {
-    try {
-        initGame();
-    } catch (e) {
-        // Display an error message on the page
-        const errorDiv = document.createElement('div');
-        errorDiv.style.color = 'red';
-        errorDiv.style.padding = '20px';
-        errorDiv.style.margin = '20px';
-        errorDiv.style.backgroundColor = 'rgba(0,0,0,0.7)';
-        errorDiv.style.borderRadius = '10px';
-        errorDiv.innerHTML = `<h2>Error Starting Game</h2><p>Please refresh the page to try again.</p>`;
-        document.body.appendChild(errorDiv);
-    }
-};
+// Once the page is loaded, initialize the game
+window.addEventListener('load', function() {
+    initGame();
+    
+    // Add mobile button controls
+    const leftBtn = document.getElementById('mobile-left');
+    const rightBtn = document.getElementById('mobile-right');
+    const jumpBtn = document.getElementById('mobile-jump');
+    
+    // Left button event listeners
+    leftBtn.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        config.keys.left = true;
+    });
+    
+    leftBtn.addEventListener('touchend', function(e) {
+        e.preventDefault();
+        config.keys.left = false;
+    });
+    
+    // Right button event listeners
+    rightBtn.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        config.keys.right = true;
+    });
+    
+    rightBtn.addEventListener('touchend', function(e) {
+        e.preventDefault();
+        config.keys.right = false;
+    });
+    
+    // Jump button event listeners
+    jumpBtn.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        config.keys.up = true;
+    });
+    
+    jumpBtn.addEventListener('touchend', function(e) {
+        e.preventDefault();
+        config.keys.up = false;
+    });
+});
 
 // Draw Bella
 function drawBella(ctx, x, y, scale = 1) {

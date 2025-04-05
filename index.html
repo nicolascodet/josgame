@@ -188,6 +188,54 @@
             100% { transform: scale(1); }
         }
         
+        /* Mobile Controls */
+        .mobile-controls {
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            display: none; /* Hidden by default, shown only on mobile */
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 100;
+        }
+        
+        .mobile-controls .direction-buttons {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .mobile-controls .jump-button {
+            display: flex;
+        }
+        
+        .mobile-btn {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(240, 98, 146, 0.7);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 24px;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .mobile-btn:active {
+            background-color: rgba(240, 98, 146, 0.9);
+            transform: scale(0.95);
+        }
+        
+        /* Only show mobile controls on small screens */
+        @media (max-width: 768px) {
+            .mobile-controls {
+                display: flex;
+            }
+        }
+        
         /* Background animation */
         .bg-animation {
             position: fixed;
@@ -339,5 +387,16 @@
     
     <!-- Single game script - only load once -->
     <script src="bella-quest.js"></script>
+    
+    <!-- Mobile Controls -->
+    <div class="mobile-controls">
+        <div class="direction-buttons">
+            <div class="mobile-btn" id="mobile-left">←</div>
+            <div class="mobile-btn" id="mobile-right">→</div>
+        </div>
+        <div class="jump-button">
+            <div class="mobile-btn" id="mobile-jump">↑</div>
+        </div>
+    </div>
 </body>
 </html> 
