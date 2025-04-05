@@ -1,0 +1,16 @@
+# Node modules
+node_modules/
+
+# macOS system files
+.DS_Store
+
+# IDE files
+.idea/
+.vscode/
+
+# Logs
+*.log
+
+# Environment variables
+.env
+.env.local 

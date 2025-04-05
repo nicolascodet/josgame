@@ -1,0 +1,12 @@
+{
+  "name": "protect-josephina",
+  "version": "1.0.0",
+  "description": "A 2D platformer game where Bella protects Josephina across San Diego",
+  "main": "bella-quest.js",
+  "scripts": {
+    "start": "http-server -c-1"
+  },
+  "dependencies": {
+    "http-server": "^14.1.1"
+  }
+} 

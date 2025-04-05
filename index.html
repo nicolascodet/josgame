@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bella's Quest - A Special Journey for Josephina</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #2c3e50;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Poppins', Arial, sans-serif;
+            overflow: hidden;
+        }
+        canvas {
+            border: 3px solid #f06292;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+            max-width: 100%;
+            max-height: 100vh;
+            z-index: 1;
+        }
+        #ui-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            color: white;
+            z-index: 10;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-bottom: 2px solid #f06292;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            transition: transform 0.5s ease-out;
+        }
+        .ui-hidden {
+            transform: translateY(-100%);
+        }
+        .game-title {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 5px;
+            color: #FFD700;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            font-weight: 600;
+        }
+        
+        #game-container {
+            position: relative;
+            margin-bottom: 20px;
+            z-index: 1;
+        }
+        
+        .subtitle {
+            text-align: center;
+            font-size: 14px;
+            margin-bottom: 5px;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .controls {
+            text-align: center;
+            font-size: 14px;
+            color: #ccc;
+            margin-top: 5px;
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 5px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .control-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .key {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 12px;
+            color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .credits {
+            text-align: center;
+            font-size: 12px;
+            color: #aaa;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        .heart {
+            color: #ff6b6b;
+            display: inline-block;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .customization-guide {
+            margin-top: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #e0e0e0;
+        }
+        
+        .customization-guide h3 {
+            color: #FFD700;
+            margin-top: 0;
+            margin-bottom: 5px;
+        }
+        
+        .customization-guide h4 {
+            margin: 5px 0;
+        }
+        
+        .customization-guide ul {
+            margin: 5px 0;
+            padding-left: 20px;
+        }
+        
+        .customization-guide li {
+            margin-bottom: 2px;
+        }
+        
+        .toggle-guide {
+            background-color: rgba(0, 0, 0, 0.2);
+            border: none;
+            color: #FFD700;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+        
+        .toggle-guide:hover {
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        
+        .game-button {
+            background-color: #f06292;
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Poppins', Arial, sans-serif;
+            font-size: 14px;
+        }
+        
+        .game-button:hover {
+            background-color: #e91e63;
+        }
+        
+        .game-button.active {
+            background-color: #c2185b;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Background animation */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        .bg-animation span {
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation: move 3s linear infinite;
+        }
+        
+        @keyframes move {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+                border-radius: 50%;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+                border-radius: 50%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background animation -->
+    <div class="bg-animation" id="bg-animation"></div>
+    
+    <!-- UI container -->
+    <div id="ui-container">
+        <div class="game-title">Bella's Quest: A Journey of Love</div>
+        <div class="subtitle">A special adventure through memories with Josephina.<br>Simply find and collect the memory photo in each level to progress!</div>
+        
+        <div class="controls">
+            <div class="control-item">
+                <span class="key">←</span>
+                <span class="key">→</span>
+                <span>Move</span>
+            </div>
+            <div class="control-item">
+                <span class="key">↑</span>
+                <span class="key">Space</span>
+                <span>Jump</span>
+            </div>
+            <div class="control-item">
+                <span class="key">R</span>
+                <span>Restart</span>
+            </div>
+        </div>
+        
+        <div class="button-group">
+            <button id="restart-game" class="game-button">Restart Game</button>
+            <button id="toggle-guide" class="toggle-guide">Show Guide</button>
+        </div>
+        
+        <div id="customization-guide" class="customization-guide hidden">
+            <h3>How to Customize</h3>
+            <ul>
+                <li>Required images: bella_sprite.png, tampa_background.png, sdsu_background.png, pb_background.png</li>
+                <li>Edit heartfelt messages in bella-quest.js to add your own personal messages</li>
+            </ul>
+        </div>
+        
+        <div class="credits">
+            Made with <span class="heart">❤️</span> for Josephina
+        </div>
+    </div>
+    
+    <!-- Game container - comes after UI -->
+    <div id="game-container"></div>
+    
+    <script>
+        // Create background animation elements
+        window.addEventListener('load', () => {
+            const bgAnimation = document.getElementById('bg-animation');
+            const count = 20;
+            
+            for (let i = 0; i < count; i++) {
+                const bubble = document.createElement('span');
+                
+                // Random position
+                bubble.style.left = Math.random() * 100 + '%';
+                bubble.style.top = Math.random() * 100 + '%';
+                
+                // Random size
+                const size = Math.random() * 30 + 10;
+                bubble.style.width = size + 'px';
+                bubble.style.height = size + 'px';
+                
+                // Random animation delay
+                bubble.style.animationDelay = Math.random() * 10 + 's';
+                
+                // Random animation duration
+                bubble.style.animationDuration = Math.random() * 10 + 15 + 's';
+                
+                bgAnimation.appendChild(bubble);
+            }
+            
+            // Toggle customization guide
+            const toggleButton = document.getElementById('toggle-guide');
+            const guideElement = document.getElementById('customization-guide');
+            
+            toggleButton.addEventListener('click', () => {
+                if (guideElement.classList.contains('hidden')) {
+                    guideElement.classList.remove('hidden');
+                    toggleButton.textContent = 'Hide Guide';
+                } else {
+                    guideElement.classList.add('hidden');
+                    toggleButton.textContent = 'Show Guide';
+                }
+            });
+            
+            // Restart game button
+            const restartButton = document.getElementById('restart-game');
+            restartButton.addEventListener('click', () => {
+                if (window.resetGame) {
+                    window.resetGame();
+                    hideUIOverlay();
+                } else {
+                    // If resetGame function isn't available, reload the page
+                    window.location.reload();
+                }
+            });
+            
+            // Add function to hide UI overlay
+            window.hideUIOverlay = function() {
+                const uiContainer = document.getElementById('ui-container');
+                uiContainer.classList.add('ui-hidden');
+            };
+            
+            // Expose function to show UI overlay if needed
+            window.showUIOverlay = function() {
+                const uiContainer = document.getElementById('ui-container');
+                uiContainer.classList.remove('ui-hidden');
+            };
+        });
+    </script>
+    
+    <!-- Single game script - only load once -->
+    <script src="bella-quest.js"></script>
+</body>
+</html> 
